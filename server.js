@@ -92,7 +92,7 @@ app.post('/api/send-sos', async (req, res) => {
             }
 
             await client.messages.create({
-                body: `[SHE RAKSHA SOS] Alert from ${senderName}: ${message}`,
+                body: message,
                 from: twilioNumber,
                 to: formattedPhone
             });

@@ -73,10 +73,11 @@ interface AppState {
   tapCount: number;
   lastTapTime: number;
   longPressTimer: number | null;
+  touchStartTime: number | null;
 }
 
 const state: AppState = {
-  view: "onboarding",
+  view: "dashboard",
   onboardingStep: 1,
   settings: null,
   notifications: [],
@@ -86,6 +87,7 @@ const state: AppState = {
   tapCount: 0,
   lastTapTime: 0,
   longPressTimer: null,
+  touchStartTime: null,
 };
 
 const HELPLINE_NUMBER = "112";
@@ -601,6 +603,8 @@ function renderDashboard() {
   sosBtn?.addEventListener("mousedown", startSOSLongPress);
   sosBtn?.addEventListener("touchstart", (e) => {
     e.preventDefault();
+    // For mobile, handle tap as both click and potential long press
+    state.touchStartTime = Date.now();
     startSOSLongPress();
   });
 
@@ -609,6 +613,11 @@ function renderDashboard() {
   sosBtn?.addEventListener("touchend", (e) => {
     e.preventDefault();
     cancelSOSLongPress();
+    
+    // Check if this was a quick tap (not long press)
+    if (state.touchStartTime && Date.now() - state.touchStartTime < 500) {
+      handleSOSTap();
+    }
   });
   sosBtn?.addEventListener("touchcancel", cancelSOSLongPress);
 
