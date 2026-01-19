@@ -1,0 +1,8 @@
+
+{
+  "name": "She Raksha - Women's Safety SOS",
+  "description": "A high-security SOS application for women featuring rapid emergency alerts, location sharing, and fake call simulation to ensure safety in any environment.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
