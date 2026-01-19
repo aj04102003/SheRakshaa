@@ -92,7 +92,7 @@ const HELPLINE_NUMBER = "112";
 const RING_URL =
   "https://actions.google.com/sounds/v1/alarms/phone_ringing_loop.ogg";
 const BACKEND_URL =
-  window.location.hostname === "localhost" ? "http://localhost:3000" : "";
+  window.location.hostname === "localhost" ? "http://localhost:3000" : "/api";
 const ringtone = new Audio("original_iphone.mp3");
 ringtone.loop = true;
 ringtone.volume = 1.0; // Full volume
@@ -587,7 +587,7 @@ function renderDashboard() {
   
   const sendEmergencySMS = async () => {
     try {
-      const response = await fetch(`${BACKEND_URL}/send-sms`, {
+      const response = await fetch(`${BACKEND_URL}/send-sos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
