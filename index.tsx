@@ -92,7 +92,7 @@ const HELPLINE_NUMBER = "112";
 const RING_URL =
   "https://actions.google.com/sounds/v1/alarms/phone_ringing_loop.ogg";
 const BACKEND_URL =
-  window.location.hostname === "localhost" ? "http://localhost:3000" : "/api";
+  window.location.hostname === "localhost" ? "http://localhost:3000/api" : "/api";
 const ringtone = new Audio("original_iphone.mp3");
 ringtone.loop = true;
 ringtone.volume = 1.0; // Full volume
@@ -1257,7 +1257,7 @@ function renderProfile() {
       }
 
       try {
-        const res = await fetch(`${BACKEND_URL}/api/test-sms`, {
+        const res = await fetch(`${BACKEND_URL}/test-sms`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ phone: testPhone, name: state.settings?.userName }),
@@ -1507,7 +1507,7 @@ async function triggerSOS() {
 
       try {
         // 1. Backend dispatch via Twilio
-        const res = await fetch(`${BACKEND_URL}/api/send-sos`, {
+        const res = await fetch(`${BACKEND_URL}/send-sos`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
