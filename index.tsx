@@ -1210,8 +1210,8 @@ function renderProfile() {
   document
     .getElementById("profile-test-sms")
     ?.addEventListener("click", async () => {
-      // Use Twilio number for testing (trial accounts can only send to verified numbers)
-      const testPhone = "+13369103955"; // This is the Twilio number itself
+      // Use verified number for testing (replace with your actual verified number)
+      const testPhone = "+919354120880"; // Must be verified in Twilio
       if (!state.settings?.contacts?.length) {
         showError("Add at least one contact before testing SMS.");
         return;
