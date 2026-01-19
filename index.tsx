@@ -529,7 +529,7 @@ function renderDashboard() {
     if (state.tapCount === 2) {
       setTimeout(() => {
         if (state.tapCount === 2) {
-          sendEmergencyMessages();
+          triggerSOS();
           resetTapCounters();
         }
       }, 300);
@@ -554,7 +554,7 @@ function renderDashboard() {
     
     state.longPressTimer = window.setTimeout(() => {
       // Long press detected - send emergency messages
-      sendEmergencyMessages();
+      triggerSOS();
       resetTapCounters();
     }, 2000); // 2 second long press
     
@@ -585,46 +585,7 @@ function renderDashboard() {
     }
   };
   
-  const sendEmergencySMS = async () => {
-    try {
-      const response = await fetch(`${BACKEND_URL}/send-sos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contacts: state.settings?.contacts || [],
-          message: `🆘 EMERGENCY ALERT! ${state.settings?.userName || 'Someone'} needs immediate help. Please contact emergency services. This is an automated SOS alert.`,
-          location: state.currentLocation
-        }),
-      });
-      
-      if (response.ok) {
-        addNotification({
-          id: String(Date.now()),
-          timestamp: Date.now(),
-          channel: "cloud",
-          summary: "Emergency SMS sent to all contacts!"
-        });
-      }
-    } catch (error) {
-      console.error("SMS error:", error);
-      addNotification({
-        id: String(Date.now()),
-        timestamp: Date.now(),
-        channel: "error",
-        summary: "SMS failed - trying emergency call"
-      });
-      makeEmergencyCall();
-    }
-  };
-  
-  const sendEmergencyMessages = async () => {
-    // Send SMS first
-    await sendEmergencySMS();
     
-    // Then trigger full SOS protocol
-    triggerSOS();
-  };
-  
   const makeEmergencyCall = () => {
     window.location.href = `tel:${HELPLINE_NUMBER}`;
     addNotification({
