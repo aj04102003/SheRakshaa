@@ -1119,9 +1119,6 @@ function renderProfile() {
 
         <section class="space-y-3">
           <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Diagnostics</p>
-          <button id="profile-test-sms" class="w-full py-3 rounded-2xl bg-emerald-600 text-white text-[10px] font-black uppercase tracking-[0.3em] active:scale-95 transition-transform">
-            Send Test SMS via Cloud
-          </button>
           <button id="profile-transparency" class="w-full py-3 rounded-2xl bg-slate-800 text-blue-400 text-[10px] font-black uppercase tracking-[0.3em] border border-slate-700 active:scale-95 transition-transform">
             View Transparency Report
           </button>
@@ -1214,40 +1211,10 @@ function renderProfile() {
       contacts: updatedContacts,
     };
     saveSettings(updatedSettings);
+    state.settings = updatedSettings;
   });
 
-  document
-    .getElementById("profile-test-sms")
-    ?.addEventListener("click", async () => {
-      // Use Twilio number for testing (trial accounts can only send to verified numbers)
-      const testPhone = "+13369103955"; // Twilio's own test number
-      if (!state.settings?.contacts?.length) {
-        showError("Add at least one contact before testing SMS.");
-        return;
-      }
-
-      try {
-        const res = await fetch(`${BACKEND_URL}/test-sms`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phone: testPhone, name: state.settings?.userName }),
-        });
-        if (res.ok) {
-          alert("✅ Test SMS sent to Twilio number! Check your phone.");
-        } else {
-          const data = await res.json().catch(() => ({} as any));
-          showError(
-            (data as any).error ||
-            "Test SMS failed. Check Twilio account verification."
-          );
-        }
-      } catch {
-        showError(
-          "Unable to reach cloud SMS service. Check your network/server."
-        );
-      }
-    });
-}
+  }
 
 // --- NOTIFICATIONS VIEW ---
 
